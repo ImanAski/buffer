@@ -18,6 +18,23 @@
 #define UART_TX 0
 #define UART_RX 1
 
+//* Local input configuration
+#ifndef HW_INPUT_PIN
+#define HW_INPUT_PIN -1
+#endif
+
+#ifndef HW_INPUT_ACTIVE_LOW
+#define HW_INPUT_ACTIVE_LOW 1
+#endif
+
+//* Protocol debug (USB serial logs)
+#ifndef PROTOCOL_DEBUG
+#define PROTOCOL_DEBUG 1
+#endif
+
+#ifndef PROTOCOL_DEBUG_RAW_BYTES
+#define PROTOCOL_DEBUG_RAW_BYTES 0
+#endif
 
 //* SPLASH SCREEN
 #define SPLASH_TEXT "LAB EQUIP"
