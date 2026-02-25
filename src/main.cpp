@@ -5,11 +5,8 @@
 #include "Config.h"
 
 static LGFX lcd;
-// static lv_display_t *disp;
 
 static constexpr uint32_t DRAW_BUF_PIXELS = TFT_WIDTH * 30;
-static lv_color_t buf1[DRAW_BUF_PIXELS];
-static lv_color_t buf2[DRAW_BUF_PIXELS];
 
 static uint32_t my_tick_cb() {
   return millis();
@@ -19,33 +16,14 @@ static void my_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_m
   const uint32_t w = lv_area_get_width(area);
   const uint32_t h = lv_area_get_height(area);
 
-  // lv_draw_sw_rgb565_swap(px_map, w * h);
-  // lcd.pushImage(area->x1, area->y1, w, h, (const uint16_t *)px_map);
-  
   lcd.startWrite();
   lcd.setAddrWindow(area->x1, area->y1, w, h);
   lcd.pushPixels((uint16_t *)px_map, w * h, true);
   lcd.endWrite();
+
   lv_display_flush_ready(disp);
 }
 
-
-static void show_list_cb(lv_timer_t *timer)
-{
-    // Clear current screen
-    lv_obj_clean(lv_screen_active());
-
-    // Create list
-    lv_obj_t *list = lv_list_create(lv_screen_active());
-    lv_obj_set_size(list, 200, 200);
-    lv_obj_center(list);
-
-    lv_list_add_text(list, "Menu");
-
-    lv_list_add_btn(list, LV_SYMBOL_FILE, "File");
-    lv_list_add_btn(list, LV_SYMBOL_DIRECTORY, "Folder");
-    lv_list_add_btn(list, LV_SYMBOL_SAVE, "Save");
-}
 
 void splash_scren() {
   lv_obj_t *label = lv_label_create(lv_screen_active());

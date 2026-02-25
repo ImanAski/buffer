@@ -2,6 +2,7 @@
 // #define LGFX_USE_V1
 
 #include "LovyanGFX.hpp"
+#include "Config.h"
 
 
 class LGFX : public lgfx::LGFX_Device {
@@ -9,21 +10,22 @@ class LGFX : public lgfx::LGFX_Device {
     lgfx::Bus_SPI _bus;
 public:
     LGFX() {
+        /* SPI-Bus Config */
         {
             auto cfg = _bus.config();
             cfg.spi_host = 0;
             cfg.spi_mode = 0;
-            cfg.freq_write = 40000000;
-            // cfg.freq_read = 16000000;
-            cfg.pin_dc = 4;
-            cfg.pin_mosi = 3;
-            cfg.pin_sclk = 2;
-            cfg.pin_miso = -1;
+            cfg.freq_write = 80000000;
+            cfg.pin_dc = TFT_DC;
+            cfg.pin_mosi = TFT_SDA;
+            cfg.pin_sclk = TFT_SCL;
+            cfg.pin_miso = TFT_MISO;
 
             _bus.config(cfg);
             _panel.setBus(&_bus);
         }
 
+        /* Panel Config */
         {
             auto cfg = _panel.config();
             cfg.pin_cs = 5;
