@@ -114,6 +114,28 @@ void process_stream(Stream &stream, const char *source) {
           }
           break;
 
+        case 0x05:
+          if (packet.len >= 1) {
+            e.type = EventType::McuSetTab;
+            e.data.tab.tab_id = static_cast<TabId>(packet.payload[0]);
+            event_queue_push(e);
+          } else {
+            push_protocol_error(7);
+          }
+          break;
+
+        case 0x06:
+          if (packet.len >= 3) {
+            e.type = EventType::McuSetBiasField;
+            e.data.bias.field_id = static_cast<BiasFieldId>(packet.payload[0]);
+            e.data.bias.value = static_cast<uint16_t>((static_cast<uint16_t>(packet.payload[1]) << 8) |
+                                                      static_cast<uint16_t>(packet.payload[2]));
+            event_queue_push(e);
+          } else {
+            push_protocol_error(8);
+          }
+          break;
+
         default:
           push_protocol_error(5);
           break;

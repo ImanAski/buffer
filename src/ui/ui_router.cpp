@@ -1,9 +1,7 @@
 #include "ui_router.h"
 
-#include "about_screen.h"
+#include "bias_settings.h"
 #include "home_screen.h"
-#include "settings_screen.h"
-#include "themes_screen.h"
 
 namespace {
 bool s_initialized = false;
@@ -26,16 +24,13 @@ void ui_router_render(const AppState &state) {
       case ScreenId::Home:
         home_screen_create();
         break;
-      case ScreenId::Settings:
-        settings_screen_create();
-        break;
-      case ScreenId::Themes:
-        themes_screen_create();
-        break;
-      case ScreenId::About:
-        about_screen_create();
+      case ScreenId::Bias:
+        bias_settings_create();
         break;
       case ScreenId::Count:
+        home_screen_create();
+        break;
+      default:
         home_screen_create();
         break;
     }
@@ -46,16 +41,12 @@ void ui_router_render(const AppState &state) {
     case ScreenId::Home:
       home_screen_apply_state(state);
       break;
-    case ScreenId::Settings:
-      settings_screen_apply_state(state);
-      break;
-    case ScreenId::Themes:
-      themes_screen_apply_state(state);
-      break;
-    case ScreenId::About:
-      about_screen_apply_state(state);
+    case ScreenId::Bias:
+      bias_settings_apply_state(state);
       break;
     case ScreenId::Count:
+      break;
+    default:
       break;
   }
 }

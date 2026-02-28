@@ -12,9 +12,26 @@ enum class ToggleId : uint8_t {
 
 enum class ScreenId : uint8_t {
   Home = 0,
-  Settings,
-  Themes,
-  About,
+  Bias,
+  Count
+};
+
+enum class TabId : uint8_t {
+  Home = 0,
+  Bias,
+  Load,
+  Help,
+  Count
+};
+
+enum class BiasFieldId : uint8_t {
+  Mode = 0,
+  DitherFreq,
+  DitherAmp,
+  DitherEnable,
+  Slope,
+  BiasVoltage,
+  OpticalOutput,
   Count
 };
 
@@ -29,9 +46,12 @@ enum class EventType : uint8_t {
   UiToggleChanged,
   UiRowPressed,
   UiNavigate,
+  UiTabSelected,
   UiThemeSelected,
   McuSetToggle,
   McuSetScreen,
+  McuSetTab,
+  McuSetBiasField,
   McuSetTheme,
   HwInputChanged,
   TouchInput,
@@ -52,6 +72,13 @@ struct Event {
     struct {
       ScreenId screen_id;
     } screen;
+    struct {
+      TabId tab_id;
+    } tab;
+    struct {
+      BiasFieldId field_id;
+      uint16_t value;
+    } bias;
     struct {
       ThemeId theme_id;
     } theme;

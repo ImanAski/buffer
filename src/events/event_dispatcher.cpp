@@ -16,6 +16,14 @@ bool is_valid_screen(ScreenId id) {
   return static_cast<uint8_t>(id) < static_cast<uint8_t>(ScreenId::Count);
 }
 
+bool is_valid_tab(TabId id) {
+  return static_cast<uint8_t>(id) < static_cast<uint8_t>(TabId::Count);
+}
+
+bool is_valid_bias_field(BiasFieldId id) {
+  return static_cast<uint8_t>(id) < static_cast<uint8_t>(BiasFieldId::Count);
+}
+
 bool is_valid_theme(ThemeId id) {
   return static_cast<uint8_t>(id) < static_cast<uint8_t>(ThemeId::Count);
 }
@@ -66,6 +74,31 @@ void event_dispatcher_dispatch(const Event &event) {
     case EventType::UiNavigate:
       if (is_valid_screen(event.data.screen.screen_id)) {
         app_state_set_screen(*s_state, event.data.screen.screen_id);
+      }
+      break;
+
+    case EventType::McuSetTab:
+      if (is_valid_tab(event.data.tab.tab_id)) {
+        app_state_set_tab(*s_state, event.data.tab.tab_id);
+        s_state->comms_online = true;
+      }
+      break;
+
+    case EventType::McuSetBiasField:
+      if (is_valid_bias_field(event.data.bias.field_id)) {
+        app_state_set_bias_field(*s_state, event.data.bias.field_id, event.data.bias.value);
+        s_state->comms_online = true;
+      }
+      break;
+
+    case EventType::UiTabSelected:
+      if (is_valid_tab(event.data.tab.tab_id)) {
+        app_state_set_tab(*s_state, event.data.tab.tab_id);
+        if (event.data.tab.tab_id == TabId::Bias) {
+          app_state_set_screen(*s_state, ScreenId::Bias);
+        } else {
+          app_state_set_screen(*s_state, ScreenId::Home);
+        }
       }
       break;
 
